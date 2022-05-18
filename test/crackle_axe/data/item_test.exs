@@ -8,6 +8,6 @@ defmodule CrackleAxe.Data.ItemTest do
 
   test "has the basic attribute" do
     item = Item.new("Ye")
-    assert Enum.any?(item.attributes, fn {name, _funs, _state} -> name == :basic end)
+    assert Enum.any?(item.attributes, fn {name, {_funs, _state}} -> name == :basic end)
   end
 end
