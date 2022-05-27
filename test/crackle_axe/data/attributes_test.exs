@@ -33,7 +33,7 @@ defmodule CrackleAxe.Data.AttributesTest do
     end
   end
 
-  describe "health_attribute" do
+  describe "health attribute" do
     test "health/2 will generate a halth attr with the expected current/msx health" do
       assert match?({:health, {_funs, 73}}, health(100, 73))
     end
@@ -60,6 +60,13 @@ defmodule CrackleAxe.Data.AttributesTest do
       {:health, {actions, _} = health_attr} = health(182, 90)
 
       assert apply_action(health_attr, :change_by, [-190]) == {actions, 0}
+    end
+  end
+
+  describe "inventory attribute" do
+    test "inventory/0 will create a blank inventory attribute" do
+      i = Attributes.Inventory.new()
+      assert match?({:inventory, {_actions, ^i}}, inventory())
     end
   end
 end

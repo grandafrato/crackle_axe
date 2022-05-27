@@ -7,6 +7,7 @@ defmodule CrackleAxe.Data.Attributes.InventoryTest do
              %Inventory{
                storage: nil,
                hand: %{
+                 0 => nil,
                  1 => nil,
                  2 => nil,
                  3 => nil,
@@ -15,8 +16,7 @@ defmodule CrackleAxe.Data.Attributes.InventoryTest do
                  6 => nil,
                  7 => nil,
                  8 => nil,
-                 9 => nil,
-                 10 => nil
+                 9 => nil
                }
              },
              Inventory.new()
@@ -25,6 +25,7 @@ defmodule CrackleAxe.Data.Attributes.InventoryTest do
 
   test "hand/0 returns a 10 value map" do
     assert Inventory.hand() == %{
+             0 => nil,
              1 => nil,
              2 => nil,
              3 => nil,
@@ -33,8 +34,7 @@ defmodule CrackleAxe.Data.Attributes.InventoryTest do
              6 => nil,
              7 => nil,
              8 => nil,
-             9 => nil,
-             10 => nil
+             9 => nil
            }
   end
 

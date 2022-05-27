@@ -44,4 +44,13 @@ defmodule CrackleAxe.Data.Attributes do
 
   @spec health(non_neg_integer()) :: {:health, {%{atom() => fun()}, non_neg_integer()}}
   def health(max_health), do: health(max_health, max_health)
+
+  @doc """
+  The inventory attribute.
+  """
+  @spec inventory() :: {:inventory, {%{atom() => fun()}, __MODULE__.Inventory.t()}}
+  def inventory() do
+    alias __MODULE__.Inventory
+    {:inventory, {%{}, Inventory.new()}}
+  end
 end

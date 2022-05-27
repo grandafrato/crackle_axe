@@ -3,6 +3,7 @@ defmodule CrackleAxe.Data.Attributes.Inventory do
   use TypedStruct
 
   @type hand_t() :: %{
+          0 => Item.t() | nil,
           1 => Item.t() | nil,
           2 => Item.t() | nil,
           3 => Item.t() | nil,
@@ -11,8 +12,7 @@ defmodule CrackleAxe.Data.Attributes.Inventory do
           6 => Item.t() | nil,
           7 => Item.t() | nil,
           8 => Item.t() | nil,
-          9 => Item.t() | nil,
-          10 => Item.t() | nil
+          9 => Item.t() | nil
         }
 
   typedstruct do
@@ -34,6 +34,7 @@ defmodule CrackleAxe.Data.Attributes.Inventory do
   @spec hand() :: hand_t()
   def hand() do
     %{
+      0 => nil,
       1 => nil,
       2 => nil,
       3 => nil,
@@ -42,8 +43,7 @@ defmodule CrackleAxe.Data.Attributes.Inventory do
       6 => nil,
       7 => nil,
       8 => nil,
-      9 => nil,
-      10 => nil
+      9 => nil
     }
   end
 
