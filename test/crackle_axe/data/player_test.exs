@@ -4,7 +4,7 @@ defmodule CrackleAxe.Data.PlayerTest do
 
   test "has the basic attribute" do
     player = Player.new()
-    assert Enum.any?(player.attributes, fn {name, {_funs, _state}} -> name == :basic end)
+    assert Map.get(player.attributes, :basic) != nil
   end
 
   describe "Player Health" do

@@ -7,6 +7,9 @@ defmodule CrackleAxe.Data.Item do
     field :attributes, Attributes.attrs(), default: []
   end
 
+  @doc """
+  Returns a new Item struct.
+  """
   @spec new(String.t()) :: t()
   def new(name), do: %__MODULE__{name: name, attributes: add_attribute(%{}, basic())}
 end

@@ -44,7 +44,7 @@ defmodule CrackleAxe.Data.AttributesTest do
       assert health(number) == health(number, number)
     end
 
-    test ":change_by will add or subtract the health level by the value given value" do
+    test ":change_by will add or subtract the health level by the given value" do
       {:health, {actions, _} = health_attr} = health(182)
 
       assert apply_action(health_attr, :change_by, [-2]) == {actions, 180}
