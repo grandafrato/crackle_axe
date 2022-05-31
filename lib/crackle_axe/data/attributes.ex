@@ -34,7 +34,7 @@ defmodule CrackleAxe.Data.Attributes do
        {%{identity: & &1, opposite_identity: &(!&1)}, Integer.mod(Enum.random(1..100), 2) == 0}}
 
   @doc """
-  The attribute the measures health level.
+  The attribute that measures health level.
   """
   @spec health(non_neg_integer(), non_neg_integer()) ::
           {:health, {%{atom() => fun()}, non_neg_integer()}}
