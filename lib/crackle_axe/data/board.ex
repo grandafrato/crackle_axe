@@ -2,7 +2,7 @@ defmodule CrackleAxe.Data.Board do
   alias __MODULE__.Entity
   use TypedStruct
 
-  @type entity() :: nil | __MODULE__.Entity.id()
+  @type entity() :: nil | :wall | __MODULE__.Entity.id()
 
   typedstruct do
     field :name, String.t()

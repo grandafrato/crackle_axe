@@ -50,7 +50,7 @@ defmodule CrackleAxe.Data.Attributes.Inventory do
   @doc """
   Puts the given object in the hand.
   """
-  @spec put_in_hand(t(), pos_integer(), Item.t() | nil) :: t()
+  @spec put_in_hand(t(), non_neg_integer(), Item.t() | nil) :: t()
   def put_in_hand(inventory, slot, item) do
     Map.update!(inventory, :hand, &Map.put(&1, slot, item))
   end
@@ -58,7 +58,7 @@ defmodule CrackleAxe.Data.Attributes.Inventory do
   @doc """
   Replaces the given slot with nil.
   """
-  @spec drop_from_hand(t(), pos_integer()) :: t()
+  @spec drop_from_hand(t(), non_neg_integer()) :: t()
   def drop_from_hand(inventory, slot) do
     put_in_hand(inventory, slot, nil)
   end
