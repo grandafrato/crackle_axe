@@ -14,7 +14,7 @@ defmodule CrackleAxe.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :crypto],
       mod: {CrackleAxe.Application, []}
     ]
   end
@@ -23,7 +23,8 @@ defmodule CrackleAxe.MixProject do
   defp deps do
     [
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:typed_struct, "~> 0.3.0"}
+      {:typed_struct, "~> 0.3.0"},
+      {:uuid, "~> 1.1"}
     ]
   end
 end

@@ -1,12 +1,11 @@
 defmodule CrackleAxe.Data.BoardTest do
-  alias CrackleAxe.Data.Board
+  alias CrackleAxe.Data.{Board, Player}
   use ExUnit.Case, async: true
 
   describe "new/3" do
     setup do
-      x = :rand.uniform(20)
-      y = :rand.uniform(20)
-      %Board{name: name, board: board} = Board.new("Foo", x, y)
+      {x, y} = {:rand.uniform(20), :rand.uniform(20)}
+      %Board{name: name, board: board, active_entities: %{}} = Board.new("Foo", x, y)
 
       [board: board, name: name, x: x, y: y]
     end
@@ -27,6 +26,25 @@ defmodule CrackleAxe.Data.BoardTest do
 
     test "it generates a board with some nil values", context do
       assert Enum.any?(context.board, &Enum.any?(&1, fn x -> x == nil end))
+    end
+  end
+
+  describe "place_entity/4" do
+    test "it puts the entity in a map of active entities, accessable by the ID" do
+      {id, updated_board} = Board.place_entity(Board.new("Foo", 10, 10), Player.new(), 4, 3)
+
+      assert Map.has_key?(updated_board.active_entities, id)
+      assert id == Map.get(updated_board.active_entities, id).id
+    end
+
+    test "it makes the x and y in active_entities equal to both indexes to reach it's board id" do
+      {id, %Board{active_entities: entities, board: board_data}} =
+        Board.place_entity(Board.new("Foo", 10, 10), Player.new(), 4, 3)
+
+      assert Enum.at(
+               Enum.at(board_data, Map.get(entities, id).y),
+               Map.get(entities, id).x
+             ) == id
     end
   end
 
