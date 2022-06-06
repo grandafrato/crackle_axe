@@ -5,7 +5,9 @@ defmodule CrackleAxe.Data.BoardTest do
   describe "new/3" do
     setup do
       {x, y} = {:rand.uniform(20), :rand.uniform(20)}
-      %Board{name: name, board: board, active_entities: %{}} = Board.new("Foo", x, y)
+
+      %Board{name: name, board: board, active_entities: %{}, width: ^x, height: ^y} =
+        Board.new("Foo", x, y)
 
       [board: board, name: name, x: x, y: y]
     end
@@ -39,7 +41,7 @@ defmodule CrackleAxe.Data.BoardTest do
 
     test "it makes the x and y in active_entities equal to both indexes to reach it's board id" do
       {id, %Board{active_entities: entities, board: board_data}} =
-        Board.place_entity(Board.new("Foo", 10, 10), Player.new(), 4, 3)
+        Board.place_entity(Board.new("Test Equal", 10, 10), Player.new(), 4, 3)
 
       assert Enum.at(
                Enum.at(board_data, Map.get(entities, id).y),
@@ -48,7 +50,43 @@ defmodule CrackleAxe.Data.BoardTest do
     end
   end
 
-  describe "String.Chars" do
+  describe "move_entity/4" do
+    setup do
+      {x, y} = {:rand.uniform(20), :rand.uniform(20)}
+      {id, board} = Board.new("Foo", x, y) |> Board.place_entity(Player.new(), 0, 0)
+
+      [board: board, player_id: id]
+    end
+
+    test "will not move entities past board boundries", %{board: board, player_id: player_id} do
+      updated_board0 = Board.move_entity(board, player_id, 100, 100)
+      updated_board1 = Board.move_entity(board, player_id, -2, -2)
+
+      assert Map.get(updated_board0.active_entities, player_id).x == board.width - 1
+      assert Map.get(updated_board0.active_entities, player_id).y == board.height - 1
+
+      assert Map.get(updated_board1.active_entities, player_id).x == 0
+      assert Map.get(updated_board1.active_entities, player_id).y == 0
+    end
+
+    test "will have the coordinates of the entity be equal to the position on the board", %{
+      board: board,
+      player_id: player_id
+    } do
+      updated_board = Board.move_entity(board, player_id, 1, 1)
+
+      assert Board.entity_at(updated_board, 1, 1) == player_id
+    end
+  end
+
+  test "entity_at/3 returns the entity identifier at the coordinates on the board" do
+    {x, y} = {:rand.uniform(9), :rand.uniform(9)}
+    {id, board} = Board.new("Foo", 10, 10) |> Board.place_entity(Player.new(), x, y)
+
+    assert Board.entity_at(board, x, y) == id
+  end
+
+  describe "String.Chars to_string" do
     test "represents nil with a space" do
       board = Board.new("Foo", 10, 10)
 

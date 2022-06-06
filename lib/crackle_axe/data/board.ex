@@ -2,12 +2,14 @@ defmodule CrackleAxe.Data.Board do
   alias __MODULE__.Entity
   use TypedStruct
 
-  @type entity() :: nil | :wall | __MODULE__.Entity.id()
+  @type entity() :: nil | :wall | Entity.id()
 
   typedstruct do
     field :name, String.t()
     field :board, list(list(entity()))
     field :active_entities, %{Entity.id() => Entity.t()}, default: %{}
+    field :width, pos_integer()
+    field :height, pos_integer()
   end
 
   @doc """
@@ -15,7 +17,7 @@ defmodule CrackleAxe.Data.Board do
   """
   @spec new(String.t(), pos_integer(), pos_integer()) :: t()
   def new(name, x, y) do
-    %__MODULE__{name: name, board: board_gen(x, y)}
+    %__MODULE__{name: name, board: board_gen(x, y), width: x, height: y}
   end
 
   defp board_gen(x, y) do
@@ -45,8 +47,45 @@ defmodule CrackleAxe.Data.Board do
      |> Map.update!(:active_entities, &Map.put(&1, entity.id, entity))
      |> Map.update!(
        :board,
-       &List.replace_at(&1, y, List.replace_at(Enum.at(&1, y), x, entity.id))
+       &board_replace(&1, entity.id, x, y)
      )}
+  end
+
+  @doc """
+  Moves an entity from one place to another on the board.
+  """
+  @spec move_entity(t(), Entity.id(), integer(), integer()) :: t()
+  def move_entity(board, id, x, y) do
+    board
+    |> Map.update!(
+      :active_entities,
+      &Map.update!(&1, id, fn entity ->
+        Entity.move(entity, min(board.width - 1, x), min(board.height - 1, y))
+      end)
+    )
+    |> then(fn updated_board ->
+      Map.update!(updated_board, :board, fn board_data ->
+        board_data
+        |> board_replace(nil, board.active_entities[id].x, board.active_entities[id].y)
+        |> board_replace(
+          id,
+          updated_board.active_entities[id].x,
+          updated_board.active_entities[id].y
+        )
+      end)
+    end)
+  end
+
+  defp board_replace(board_data, item, x, y) do
+    List.replace_at(board_data, y, List.replace_at(Enum.at(board_data, y), x, item))
+  end
+
+  @doc """
+  Returns the entity identifier of the entity at the given coordinates.
+  """
+  @spec entity_at(t(), non_neg_integer(), non_neg_integer()) :: nil | entity()
+  def entity_at(board, x, y) do
+    Enum.at(Enum.at(board.board, y), x)
   end
 
   defimpl String.Chars do
