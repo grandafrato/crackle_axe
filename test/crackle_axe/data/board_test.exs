@@ -52,7 +52,7 @@ defmodule CrackleAxe.Data.BoardTest do
 
   describe "move_entity/4" do
     setup do
-      {x, y} = {:rand.uniform(20), :rand.uniform(20)}
+      {x, y} = {:rand.uniform(18) + 2, :rand.uniform(18) + 2}
       {id, board} = Board.new("Foo", x, y) |> Board.place_entity(Player.new(), 0, 0)
 
       [board: board, player_id: id]
@@ -86,7 +86,13 @@ defmodule CrackleAxe.Data.BoardTest do
     assert Board.entity_at(board, x, y) == id
   end
 
-  describe "String.Chars to_string" do
+  describe "to_string/1" do
+    test "to_string/1 is equal to String.Chars.CrackleAxe.Board.to_string/1" do
+      board = Board.new("Foo", 10, 10)
+
+      assert to_string(board) == Board.to_string(board)
+    end
+
     test "represents nil with a space" do
       board = Board.new("Foo", 10, 10)
 
@@ -103,6 +109,17 @@ defmodule CrackleAxe.Data.BoardTest do
       board_rep_by(board, fn {entity, char} ->
         if entity == :wall do
           assert char == ?#
+        end
+      end)
+    end
+
+    test "represents an entity with @" do
+      {x, y} = {:rand.uniform(9), :rand.uniform(9)}
+      {_, board} = Board.new("Foo", 10, 10) |> Board.place_entity(Player.new(), x, y)
+
+      board_rep_by(board, fn {entity, char} ->
+        if match?({:ok, _}, UUID.info(entity)) do
+          assert char == ?@
         end
       end)
     end

@@ -88,6 +88,8 @@ defmodule CrackleAxe.Data.Board do
     Enum.at(Enum.at(board.board, y), x)
   end
 
+  defdelegate to_string(board), to: String.Chars
+
   defimpl String.Chars do
     @spec to_string(CrackleAxe.Data.Board.t()) :: String.t()
     def to_string(board) do
@@ -97,6 +99,7 @@ defmodule CrackleAxe.Data.Board do
           case entity do
             nil -> ?\s
             :wall -> ?#
+            _ -> ?@
           end
         end)
         |> List.to_string()
