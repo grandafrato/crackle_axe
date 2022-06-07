@@ -4,7 +4,7 @@ defmodule CrackleAxe.Data.BoardTest do
 
   describe "new/3" do
     setup do
-      {x, y} = {:rand.uniform(20), :rand.uniform(20)}
+      {x, y} = {:rand.uniform(18) + 2, :rand.uniform(18) + 2}
 
       %Board{name: name, board: board, active_entities: %{}, width: ^x, height: ^y} =
         Board.new("Foo", x, y)

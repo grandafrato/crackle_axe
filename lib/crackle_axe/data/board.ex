@@ -88,7 +88,7 @@ defmodule CrackleAxe.Data.Board do
     Enum.at(Enum.at(board.board, y), x)
   end
 
-  defdelegate to_string(board), to: String.Chars
+  defdelegate to_string(board), to: String.Chars.CrackleAxe.Data.Board
 
   defimpl String.Chars do
     @spec to_string(CrackleAxe.Data.Board.t()) :: String.t()
