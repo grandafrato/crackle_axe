@@ -83,9 +83,17 @@ defmodule CrackleAxe.Data.Board do
   @doc """
   Returns the entity identifier of the entity at the given coordinates.
   """
-  @spec entity_at(t(), non_neg_integer(), non_neg_integer()) :: nil | entity()
-  def entity_at(board, x, y) do
+  @spec entity_id_at(t(), non_neg_integer(), non_neg_integer()) :: nil | entity()
+  def entity_id_at(board, x, y) do
     Enum.at(Enum.at(board.board, y), x)
+  end
+
+  @doc """
+  Returns an entity by its id.
+  """
+  @spec get_entity(t(), Entity.id()) :: Entity.t() | :error
+  def get_entity(board, id) do
+    Map.fetch!(board.active_entities, id)
   end
 
   defdelegate to_string(board), to: String.Chars.CrackleAxe.Data.Board

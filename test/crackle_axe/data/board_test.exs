@@ -75,15 +75,22 @@ defmodule CrackleAxe.Data.BoardTest do
     } do
       updated_board = Board.move_entity(board, player_id, 1, 1)
 
-      assert Board.entity_at(updated_board, 1, 1) == player_id
+      assert Board.entity_id_at(updated_board, 1, 1) == player_id
     end
   end
 
-  test "entity_at/3 returns the entity identifier at the coordinates on the board" do
+  test "entity_id_at/3 returns the entity identifier at the coordinates on the board" do
     {x, y} = {:rand.uniform(9), :rand.uniform(9)}
     {id, board} = Board.new("Foo", 10, 10) |> Board.place_entity(Player.new(), x, y)
 
-    assert Board.entity_at(board, x, y) == id
+    assert Board.entity_id_at(board, x, y) == id
+  end
+
+  test "get_entity/2 returns the entity by id" do
+    {x, y} = {:rand.uniform(9), :rand.uniform(9)}
+    {id, board} = Board.new("Foo", 10, 10) |> Board.place_entity(Player.new(), x, y)
+
+    assert Board.get_entity(board, id) == board.active_entities[id]
   end
 
   describe "to_string/1" do
